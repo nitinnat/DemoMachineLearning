@@ -40,14 +40,17 @@ def create_x_y(dataset):
 def drop_columns(X):
     return X.drop(columns =['Time.[Day]'])
 
-def scale_x_y(X, y):
+def split_into_train_test(X, y):
     from sklearn.model_selection import train_test_split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=0)
+    return (X_train, X_test, y_train, y_test)
+    
+def scale_x_y(X_train, X_test, y_train, y_test):
     from sklearn import preprocessing
     sc_X = preprocessing.StandardScaler()
-    X_train = sc_X.fit_transform(X_train)
-    X_test = sc_X.transform(X_test)
-    return (X_train, X_test, y_train, y_test)
+    X_train_scaled = sc_X.fit_transform(X_train)
+    X_test_scaled = sc_X.transform(X_test)
+    return (X_train_scaled, X_test_scaled, y_train, y_test)
 
 def build_model_and_get_metrics(model_name, X_train, X_test, y_train, y_test):
     import logging
@@ -67,14 +70,14 @@ def build_model_and_get_metrics(model_name, X_train, X_test, y_train, y_test):
         "RootMeanSquaredError" : rmse,
         "Accuracy" : accuracy
     }
-    return model, model_metrics
+    return model, model_metrics, y_pred
 
 def run_a_model(model_name, X_train, X_test, y_train, y_test):
     logger.info("building {} model...".format(model_name))
-    model, metrics = build_model_and_get_metrics(model_name, X_train, X_test, y_train, y_test)
+    model, metrics, y_pred = build_model_and_get_metrics(model_name, X_train, X_test, y_train, y_test)
     details = {"model": model, "metrics": metrics}
     logger.info(details)
-    return details
+    return details, y_pred
 
 
 def run_models(X_train, X_test, y_train, y_test):
