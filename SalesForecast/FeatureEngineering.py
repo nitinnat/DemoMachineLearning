@@ -50,6 +50,9 @@ def scale_x_y(X, y):
     return (X_train, X_test, y_train, y_test)
 
 def build_model_and_get_metrics(model_name, X_train, X_test, y_train, y_test):
+    import logging
+    logger = logging.getLogger('o9_logger')
+    logger.info(f"Creating {model_name} model.")
     model = get_model(model_name)
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
