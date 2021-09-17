@@ -36,7 +36,7 @@ def get_dtree():
 
 
 def get_randomForest():
-    randomForest_model = RandomForestRegressor(n_estimators=300, max_depth=15, n_jobs=5, verbose=1)
+    randomForest_model = RandomForestRegressor(n_estimators=400, max_depth=15, n_jobs=5, verbose=1)
     return randomForest_model
 
 
