@@ -1,1 +1,1 @@
-print("Added comments, added more, and more.")
+print("Added comments.")
